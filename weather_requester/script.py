@@ -1,30 +1,28 @@
 import time
 import requests
 import os
-print ("test")
+import json
 
-#res = requests.get("https://api.openaq.org/v2/locations/2178", headers={"X-API-Key": "my-openaq-api-key-12345-6789"})
-
-licznik = 0
-location_name = "temp"
-iso_current_time = "temp"
-measurement_name = "temp"
-value = "temp"
+os.environ["LOCATION"] = "333"
 
 class Weather_Requestor:
     def __init__(self, location):
         self.set_location = location
-        self.iso_current_time = "temp"
-        self.measurement_name = "temp"
-        self.value = "temp"
+        self.url = "https://api.openaq.org/v2/latest/" + str(self.set_location) + "?limit=100&page=1&offset=0&sort=asc"
+        self.headers = {"accept": "application/json"}
 
     def output(self):
-        print (self.set_location + '\n' + "timestamp: " + self.iso_current_time + '\n' + "values: " + self.measurement_name + " " + value)
+        self.response = requests.get(self.url, headers=self.headers)
+        self.temp = json.loads(self.response.text)
+        print(self.temp["results"])
+        #for element in self.temp["results"]:
+        #    print (element)
 
-myrequestor = Weather_Requestor("test")
+myrequestor = Weather_Requestor(os.environ['LOCATION'])
 
-while licznik < 10:
-    
+while 1:
+
     time.sleep(3)
     myrequestor.output()
-    licznik = licznik + 3
+
+
