@@ -14,7 +14,7 @@ class Weather_Requestor:
     def output(self):
         self.response = requests.get(self.url, headers=self.headers)
         self.temp = json.loads(self.response.text)
-        print(self.temp["results"])
+        print(self.temp["results"][0]["location"])
         #for element in self.temp["results"]:
         #    print (element)
 
