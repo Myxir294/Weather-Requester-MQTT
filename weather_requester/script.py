@@ -16,8 +16,6 @@ class Weather_Requestor:
         self.response = requests.get(self.url, headers=self.headers)
         self.temp = json.loads(self.response.text)
         self.time = time.ctime()
-
-
         print("{\"location\": <" , self.temp["results"][0]["location"] + ">,")
         print(" \"timestamp\": <" + str(self.time) + ">,")
         print("\"values\":[")
@@ -26,7 +24,7 @@ class Weather_Requestor:
         print("]}")
         print(" ")
         print(" ")
-        
+
 myrequestor = Weather_Requestor(os.environ['LOCATION'])
 
 while 1:
