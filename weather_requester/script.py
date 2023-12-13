@@ -29,7 +29,7 @@ myrequestor = Weather_Requestor(os.environ['LOCATION'])
 
 while 1:
 
-    time.sleep(3)
     myrequestor.output()
+    time.sleep(30)
 
 
