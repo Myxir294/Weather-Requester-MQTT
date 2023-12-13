@@ -1,16 +1,23 @@
-FROM python:3.8
+# For more information, please refer to https://aka.ms/vscode-docker-python
+FROM python:3.11
 
-# set a directory for the app
-WORKDIR /usr/src/app
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
 
-# copy all the files to the container
-COPY . .
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
 
-# install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install pip requirements
+COPY requirements.txt .
+RUN python -m pip install -r requirements.txt
 
-# tell the port number the container should expose
-EXPOSE 5001
+WORKDIR /app
+COPY . /app
 
-# run the command
-CMD ["python", "./script.py"]
+# Creates a non-root user with an explicit UID and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
+
+# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
+CMD ["python", "script.py"]

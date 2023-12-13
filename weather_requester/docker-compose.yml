@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  codespacesprojecttemplatepy:
+    image: codespacesprojecttemplatepy
+    build:
+      context: .
+      dockerfile: ./Dockerfile
