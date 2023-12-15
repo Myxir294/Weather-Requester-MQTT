@@ -51,10 +51,10 @@ class Weather_Requestor:
         self.dictionary = {}
         self.dictionary.update({"location" : self.temp["results"][0]["location"]})
         self.dictionary.update({"timestamp" : str(self.time)})
+
         values_dictionary = {}
         for element in self.temp["results"][0]["measurements"]:
             values_dictionary.update({element["parameter"] : element["value"]})
-
         self.dictionary.update({"values" : values_dictionary})
 
         json_string = json.dumps(self.dictionary, skipkeys = True, allow_nan = True, ensure_ascii=False)
