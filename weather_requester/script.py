@@ -4,7 +4,7 @@ import os
 import json
 import time
 
-os.environ["LOCATION"] = "323"
+#os.environ["LOCATION"] = "323"
 
 class Weather_Requestor:
     def __init__(self, location):
@@ -24,7 +24,7 @@ class Weather_Requestor:
         values_dictionary = {}
         for element in self.temp["results"][0]["measurements"]:
             values_dictionary.update({element["parameter"] : element["value"]})
-            
+
         self.dictionary.update({"values" : values_dictionary})
 
         json_string = json.dumps(self.dictionary, skipkeys = True, allow_nan = True)
