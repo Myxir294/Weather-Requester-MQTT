@@ -3,7 +3,17 @@ import requests
 import os
 import json
 import time
+import paho.mqtt.client as mqtt
+import ssl
 
+version = '5' # or '3' 
+mytransport = 'websockets' # or 'tcp'
+
+if version == '5':
+    client = mqtt.Client(client_id="myPy",
+                         transport=mytransport,
+                         protocol=mqtt.MQTTv5)
+    
 os.environ["LOCATION"] = "10566"
 
 class Weather_Requestor:
@@ -27,7 +37,7 @@ class Weather_Requestor:
 
         self.dictionary.update({"values" : values_dictionary})
 
-        json_string = json.dumps(self.dictionary, skipkeys = True, allow_nan = True)
+        json_string = json.dumps(self.dictionary, skipkeys = True, allow_nan = True, ensure_ascii=False)
         print(json_string)
         print(" ")
 
