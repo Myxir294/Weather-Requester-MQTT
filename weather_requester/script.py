@@ -4,7 +4,7 @@ import os
 import json
 import time
 
-#os.environ["LOCATION"] = "323"
+os.environ["LOCATION"] = "10566"
 
 class Weather_Requestor:
     def __init__(self, location):
