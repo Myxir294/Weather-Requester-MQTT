@@ -3,7 +3,7 @@ import requests
 import os
 import json
 
-os.environ["LOCATION"] = "333"
+#os.environ["LOCATION"] = "333"
 
 class Weather_Requestor:
     def __init__(self, location):
@@ -30,6 +30,6 @@ myrequestor = Weather_Requestor(os.environ['LOCATION'])
 while 1:
 
     myrequestor.output()
-    time.sleep(30)
+    time.sleep(10)
 
 
