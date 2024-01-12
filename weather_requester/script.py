@@ -8,6 +8,7 @@ import encodings
 
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
+import paho.mqtt.subscribe as subscribe
 from paho.mqtt.properties import Properties
 from paho.mqtt.packettypes import PacketTypes 
 import ssl
@@ -34,6 +35,11 @@ import ssl
 
 ################lab 2
 
+def on_message(client, userdata, message, properties=None):
+        print(" Received message " + str(message.payload)
+            + " on topic '" + message.topic
+            + "' with QoS " + str(message.qos))
+
 os.environ["LOCATION"] = "10566"
 
 class Weather_Requestor:
@@ -47,11 +53,6 @@ class Weather_Requestor:
         self.client = {}
         self.topic = ""
 
-    # def on_message(client, userdata, message, properties=None):
-    #     print(" Received message " + str(message.payload)
-    #         + " on topic '" + message.topic
-    #         + "' with QoS " + str(message.qos))
-   
     def output(self):
         self.response = requests.get(self.url, headers=self.headers)
         self.temp = json.loads(self.response.text)
@@ -73,9 +74,11 @@ class Weather_Requestor:
 
         self.client = mqtt.Client(client_id, transport='tcp', protocol=mqtt.MQTTv5)
         self.client.username_pw_set(user, password)
-        #client.on_message = on_message
+        self.client.on_message = on_message
         properties=Properties(PacketTypes.CONNECT)
         properties.SessionExpiryInterval=30*60 #seconds
+
+        
         self.client.connect(ip, port, clean_start=mqtt.MQTT_CLEAN_START_FIRST_ONLY, properties=properties, keepalive=60)
         self.client.loop_start()
 
@@ -89,7 +92,9 @@ class Weather_Requestor:
         self.client.subscribe(self.topic,2)
         properties=Properties(PacketTypes.PUBLISH)
         properties.MessageExpiryInterval=30 # in seconds
-        self.client.publish(self.topic,self.json_string,2,properties=properties);
+        self.client.publish(self.topic,self.json_string,2,properties=properties,retain=True);
+
+        #self.client.subscribe()
 
 myrequestor = Weather_Requestor(os.environ['LOCATION'])
 
@@ -101,4 +106,4 @@ while 1:
     time.sleep(2)
 
     myrequestor.mqtt_publish_data()
-    time.sleep(10)
+    time.sleep(2)
