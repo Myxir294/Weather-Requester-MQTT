@@ -79,13 +79,17 @@ class Weather_Requestor:
         self.client.connect(ip, port, clean_start=mqtt.MQTT_CLEAN_START_FIRST_ONLY, properties=properties, keepalive=60)
         self.client.loop_start()
 
-    def mqtt_publish(self):
+    def mqtt_publish_data(self):
 
-        self.topic = str(self.client._client_id) + '/' + str(self.temp["results"][0]["location"])  #'topic/important'
-        str_temp = unicodedata.normalize("NFKD", self.topic)
-        self.topic = str_temp.encode(encoding="ascii",errors="ignore")
+        self.topic = str(self.client._client_id)[1:-1] + '/' + str(self.temp["results"][0]["location"])  #'topic/important'
+        #self.topic = (unicodedata.normalize('NFD', self.topic).encode('ascii', 'ignore')).decode('ascii', 'ignore')
+        self.topic = self.topic.encode('ascii', 'ignore').decode('ascii', 'ignore')[1:]
         print(self.topic)
+
         self.client.subscribe(self.topic,2)
+        properties=Properties(PacketTypes.PUBLISH)
+        properties.MessageExpiryInterval=30 # in seconds
+        self.client.publish(self.topic,self.json_string,2,properties=properties);
 
 myrequestor = Weather_Requestor(os.environ['LOCATION'])
 
@@ -96,5 +100,5 @@ while 1:
     myrequestor.output()
     time.sleep(2)
 
-    myrequestor.mqtt_publish()
+    myrequestor.mqtt_publish_data()
     time.sleep(10)
