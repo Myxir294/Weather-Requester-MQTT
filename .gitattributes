@@ -3,4 +3,4 @@
 *.{bat,[bB][aA][tT]} text eol=crlf
 
 *.html linguist-detectable=false
-
+*.scss linguist-detectable=false
