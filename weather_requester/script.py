@@ -3,6 +3,8 @@ import requests
 import os
 import json
 import time
+import unicodedata
+import encodings
 
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
@@ -10,25 +12,25 @@ from paho.mqtt.properties import Properties
 from paho.mqtt.packettypes import PacketTypes 
 import ssl
 
-client = mqtt.Client(client_id="student252964", transport='tcp', protocol=mqtt.MQTTv5)
-client.username_pw_set("student", "sys_wbud")
-client.tls_set(certfile=None,
-               keyfile=None,
-               cert_reqs=ssl.CERT_REQUIRED)
+# client = mqtt.Client(client_id="student252964", transport='tcp', protocol=mqtt.MQTTv5)
+# client.username_pw_set("student", "sys-wbud")
+# # client.tls_set(certfile=None,
+# #               keyfile=None,
+# #               cert_reqs=ssl.CERT_REQUIRED)
 
-def on_message(client, userdata, message, properties=None):
-   print(" Received message " + str(message.payload)
-        + " on topic '" + message.topic
-        + "' with QoS " + str(message.qos))
+# def on_message(client, userdata, message, properties=None):
+#    print(" Received message " + str(message.payload)
+#         + " on topic '" + message.topic
+#         + "' with QoS " + str(message.qos))
 
-client.on_connect = on_message
+# client.on_message = on_message
    
-properties=Properties(PacketTypes.CONNECT)
-properties.SessionExpiryInterval=30*60 #sekundy
+# properties=Properties(PacketTypes.CONNECT)
+# properties.SessionExpiryInterval=30*60 #sekundy
 
-client.connect("46.101.108.102", 1883, clean_start=mqtt.MQTT_CLEAN_START_FIRST_ONLY, properties=properties, keepalive=60)
+# client.connect("46.101.108.102", 1883, clean_start=mqtt.MQTT_CLEAN_START_FIRST_ONLY, properties=properties, keepalive=60)
 
-client.loop_start()
+# client.loop_start()
 
 ################lab 2
 
@@ -41,7 +43,15 @@ class Weather_Requestor:
         self.headers = {"accept": "application/json"}
         self.time = datetime.now().isoformat()
         self.dictionary = {}
+        self.json_string = ""
+        self.client = {}
+        self.topic = ""
 
+    # def on_message(client, userdata, message, properties=None):
+    #     print(" Received message " + str(message.payload)
+    #         + " on topic '" + message.topic
+    #         + "' with QoS " + str(message.qos))
+   
     def output(self):
         self.response = requests.get(self.url, headers=self.headers)
         self.temp = json.loads(self.response.text)
@@ -55,14 +65,36 @@ class Weather_Requestor:
             values_dictionary.update({element["parameter"] : element["value"]})
         self.dictionary.update({"values" : values_dictionary})
 
-        json_string = json.dumps(self.dictionary, skipkeys = True, allow_nan = True, ensure_ascii=False)
-        print(json_string)
+        self.json_string = json.dumps(self.dictionary, skipkeys = True, allow_nan = True, ensure_ascii=False)
+        print(self.json_string)
         print(" ")
+
+    def mqtt_connect(self, client_id, ip, port, password, user):
+
+        self.client = mqtt.Client(client_id, transport='tcp', protocol=mqtt.MQTTv5)
+        self.client.username_pw_set(user, password)
+        #client.on_message = on_message
+        properties=Properties(PacketTypes.CONNECT)
+        properties.SessionExpiryInterval=30*60 #seconds
+        self.client.connect(ip, port, clean_start=mqtt.MQTT_CLEAN_START_FIRST_ONLY, properties=properties, keepalive=60)
+        self.client.loop_start()
+
+    def mqtt_publish(self):
+
+        self.topic = str(self.client._client_id) + '/' + str(self.temp["results"][0]["location"])  #'topic/important'
+        str_temp = unicodedata.normalize("NFKD", self.topic)
+        self.topic = str_temp.encode(encoding="ascii",errors="ignore")
+        print(self.topic)
+        self.client.subscribe(self.topic,2)
 
 myrequestor = Weather_Requestor(os.environ['LOCATION'])
 
+myrequestor.mqtt_connect("252964", "46.101.108.102", 1883, "sys-wbud", "student")
+
 while 1:
-
+    
     myrequestor.output()
-    time.sleep(10)
+    time.sleep(2)
 
+    myrequestor.mqtt_publish()
+    time.sleep(10)
