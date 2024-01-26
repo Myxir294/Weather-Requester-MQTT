@@ -11,6 +11,9 @@ my_data_requestor = Weather_Requestor(os.environ['LOCATION'])
 
 mqtt_communication = MQTT_communication_class("252964", "46.101.199.108", 1883, "sys-wbud", "student")
 
+#basepath = os.path.dirname(__file__)
+#file = open(str(basepath+"/254854/Wrocław"), "w")
+
 while 1:
     
     #print("Below data read from weather sensors web service")

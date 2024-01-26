@@ -8,4 +8,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return app.send_static_file("index.html")
+    return "<p>Hello, World!</p>"
+
+def log():
+    with open("logs.txt", "r") as f:
+        content = f.read()
+    return render_template('log.html', content=content)

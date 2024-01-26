@@ -6,6 +6,9 @@ def on_message(client, userdata, message, properties=None):
         print(" Received message " + str(message.payload)
             + " on topic '" + message.topic
             + "' with QoS " + str(message.qos))
+        processed_topic = message.topic.replace("/", "-")
+        file = open(str(processed_topic), "w")
+        file.write(str(message.payload)) 
 
 class MQTT_communication_class:
     def __init__(self, client_id, ip, port, password, user):
@@ -17,7 +20,6 @@ class MQTT_communication_class:
         properties.SessionExpiryInterval=30*60 #seconds
         self.client.connect(ip, port, clean_start=mqtt.MQTT_CLEAN_START_FIRST_ONLY, properties=properties, keepalive=60)
         self.client.loop_start()
-
 
     def mqtt_publish_data(self, json_string, topic_data):
 
