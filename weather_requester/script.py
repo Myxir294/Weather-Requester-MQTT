@@ -98,7 +98,7 @@ class Weather_Requestor:
 
 myrequestor = Weather_Requestor(os.environ['LOCATION'])
 
-myrequestor.mqtt_connect("252964", "46.101.108.102", 1883, "sys-wbud", "student")
+myrequestor.mqtt_connect("252964", "46.101.199.108", 1883, "sys-wbud", "student")
 
 while 1:
     
