@@ -1,10 +1,20 @@
-<html>
-    <head>
-        <title>VS Code Rocks!</title>
-    </head>
-    <body>
-        <h1>VS Code can do that?</h1>
-        <p>Yes it can!</p>
-        <pre>{{ content }}</pre>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Webpage</title>
+</head>
+<body>
+    <ul>
+    {% for file in files %}
+        <li>
+            <a>
+                {{ file }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h1>My Webpage</h1>
+
+</body>
 </html>

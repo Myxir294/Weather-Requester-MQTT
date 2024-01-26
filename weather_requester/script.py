@@ -14,6 +14,9 @@ mqtt_communication = MQTT_communication_class("252964", "46.101.199.108", 1883, 
 #basepath = os.path.dirname(__file__)
 #file = open(("topics/test"), "w")
 
+#files = os.listdir("/workspaces/vscode-remote-try-python/weather_requester/topics")
+#print(files)
+
 while 1:
     
     #print("Below data read from weather sensors web service")
