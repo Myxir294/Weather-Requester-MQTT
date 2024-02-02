@@ -1,1 +1,1 @@
-b'{"location": "Wroc\xc5\x82aw, wyb. Conrada-Korzeniowskiego", "timestamp": "2024-02-02T15:48:15.641021", "values": {"pm10": 36.8564, "o3": 16.2067, "pm25": 32.0706, "bc": 1.49805, "no2": 29.0167, "so2": 2.89127, "co": 649.687}}'
+b'{"location": "Wroc\xc5\x82aw, wyb. Conrada-Korzeniowskiego", "timestamp": "2024-02-02T16:24:27.342978", "values": {"o3": 16.2067, "pm10": 36.8564, "co": 649.687, "so2": 2.89127, "bc": 1.49805, "no2": 29.0167, "pm25": 32.0706}}'
