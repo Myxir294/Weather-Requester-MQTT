@@ -7,7 +7,7 @@ def on_message(client, userdata, message, properties=None):
             + " on topic '" + message.topic
             + "' with QoS " + str(message.qos))
         processed_topic = message.topic.replace("/", "-")
-        file = open ("topics/" + (str(processed_topic)), "w")
+        file = open ("/workspaces/vscode-remote-try-python/weather_requester/topics/" + (str(processed_topic)), "w")
         file.write(str(message.payload)) 
 
 class MQTT_communication_class:
