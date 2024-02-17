@@ -1,5 +1,5 @@
 Description below is from the original, template repository and will probably be deleted in the future for the sake of clarity.
-The code written by me is located in "Weather Requestor" folder.
+The code written by me is located in "Weather Requester" folder.
 
 # Try Out Development Containers: Python
 
