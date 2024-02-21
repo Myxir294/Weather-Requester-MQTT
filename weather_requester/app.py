@@ -3,6 +3,8 @@
 # Licensed under the MIT License. See LICENSE in the project root for license information.
 #-----------------------------------------------------------------------------------------
 
+# basics of planned web app, TBA
+
 from flask import Flask
 app = Flask(__name__)
 
